@@ -1,4 +1,4 @@
-# LinkedIN-Sort
+# LinkedIn-Sort
 
 Will sort the csv exported from LinkedIn
 Remove all the rows with empty job title
