@@ -2,13 +2,8 @@ import chardet
 import pandas as pd
 import numpy as np
 
-with open('data.csv', 'rb') as f:
-    result = chardet.detect(f.read())  # or readline if the file is large
 
-
-df = pd.read_csv('data.csv', encoding=result['encoding'])
-
-def remove_empty_columns():
+def remove_empty_columns(df):
     flag = 0
     count = df.shape[1]
     # print(count)
@@ -22,44 +17,64 @@ def remove_empty_columns():
 
         if flag == 0:
             df.drop(df.columns[i], axis=1, inplace=True)
+    return df
 
 
-def remove_invalid_job_title():
+def remove_invalid_job_title(invalid, df):
     for i in range(len(invalid)):
-        df.drop(df[df['Job Title'].str.lower() == invalid[i]].index, inplace=True)
-        df.drop(df[df['Job Title'].str.contains(invalid[i]) == True].index, inplace=True)
+        df.drop(df[df['Position'].str.lower() == invalid[i]].index, inplace=True)
+        df.drop(df[df['Position'].str.contains(invalid[i]) == True].index, inplace=True)
+    return df
 
 
-def remove_invalid_comp():
+def remove_invalid_comp(invalid, df):
     for i in range(len(invalid)):
         df.drop(df[df['Company'].str.lower() == invalid[i]].index, inplace=True)
         df.drop(df[df['Company'].str.contains(invalid[i]) == True].index, inplace=True)
+    return df
 
-invalid = ['nan']
 
 def creat_invalid_list():
     F = open('invalid1.txt', 'r')
     f = F.read()
-    global invalid
     invalid = f.split('\n')
-    while 1==1:
+    while True:
         if invalid[len(invalid)-1] == '':
             del invalid[-1]
         else:
             break
+    return invalid
 
 
-remove_empty_columns()
+def get_deleted_df(df_orig, df_sorted):
+	sorted_emails = df_sorted['Email Address']
+	all_emails = df_orig['Email Address']
+	deleted_emails = np.setdiff1d(all_emails, sorted_emails)
+	df_deleted = df_orig[df_orig['Email Address'].isin(deleted_emails)]
+	return df_deleted
+	
 
-df = pd.concat([df[col].astype(str).str.lower() for col in df.columns], axis=1)
-creat_invalid_list()
-remove_invalid_job_title()
-remove_invalid_comp()
 
-df.sort_values(by=['Company'], ascending=True, inplace=True)
-df.set_index('First Name', inplace=True)
+# Reading Connections
+with open('Connections.csv', 'rb') as f:
+    result = chardet.detect(f.read())  # or readline if the file is large
+df_orig = pd.read_csv('Connections.csv', encoding=result['encoding'])
 
-print(df.head())
-print('\n\nAbout to save your data in final.csv\n\n')
-df.to_csv('final.csv')
+# Making a copy of orignal
+df_orig = pd.concat([df_orig[col].astype(str).str.lower() for col in df_orig.columns], axis=1)
+df = df_orig.copy()
+# df['index'] = df.index
+
+# remove invalid rows
+invalid = creat_invalid_list()
+remove_invalid_job_title(invalid, df)
+remove_invalid_comp(invalid, df)
+
+# Getting the deleted Dataframe
+df_deleted = get_deleted_df(df_orig, df)
+
+# Saving data
+print('\n\nAbout to save your data in sorted data.csv\n\n')
+df.to_csv('sorted data.csv')
+df_deleted.to_csv('deleted data.csv')
 print('Done !!')

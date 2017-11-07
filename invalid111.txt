@@ -1,6 +1,7 @@
 actor
-nan
 student ambassador
+nan
+university
 undergr0und auth0rity
 iit
 entrepreneur network
@@ -12,6 +13,7 @@ avenue
 the logical indian
 team kart
 student welfare group
+alumni
 specta
 spectra
 rajasthan cultural association
@@ -19,17 +21,24 @@ rankethon
 prithvi
 online code.fun.do
 opensoft
+nit
 net impact
+leader
+team
+volunteer
 national service scheme
 make a difference
+college
 kharagpur
 jntuh
+hall
 instiinfo
 indian society and culture
 kharagpur
 iitkharagpur
 society
 hall president
+institute
 green the gene
 great step
 gopali youth welfare society
@@ -44,12 +53,14 @@ fiitjee
 communiqu_
 it kharagpur
 iit kharagpur
+azad
 branding and relations cell
 card centre
 career development centre
 civil engineering society
 it kharagpur
 cognizant
+intern
 core team member
 kshitij
 spring fest
@@ -63,9 +74,11 @@ prakriti
 megalith
 basketball
 awaaz
- ecell
+research
+ecell
 e-cell
 robo bots
+spats
 student
 udaan
 carbuk.com
